@@ -2,29 +2,37 @@
 import argparse
 
 def main():
+
+    # Get arguments
     args = parse_cmd()
 
-    # Testing teams
-    teams_with_rivals = (
-        ('B', 'I'),
-        ('Dav', 'C'),
-        ('DG', 'Dan'),
-        ('R', 'L'),
-        ('M', 'A'),
-    )
-    div1,div2 = zip(*teams_with_rivals)
-    from pprint import pprint
-    pprint(div1)
-    pprint(div2)
+    # Set both divisions
+    div1 = args.div1
+    div2 = args.div2
 
-    # Schedule
+    # Make sure they are equal size
+    if len(div1) != len(div2):
+        raise ValueError('Divisions are not the same length')
+
+    # Create schedules
     schedule = []
+    for f,a in args.scheduling_funcs:
+        schedule.extend(f(div1, div2, a))
 
-    # Week 1
-    schedule.extend(get_inter_sched(div1, div2, (1,)))
+    # Print schedules
+    for week_num, week_matchups in enumerate(schedule):
 
-    # Weeks 2,3,4,5,6
-    schedule.extend(get_odd_intra_sched(div1, div2, 5, 2))
+        # Make week 1-based
+        week_num += 1
+        print('WEEK {}'.format(week_num))
+
+        # Print matchups
+        for match in week_matchups:
+            print('- {} v. {}'.format(*match))
+
+        # Empty line
+        print()
+
 
     # Weeks 7,8,9
     schedule.extend(get_inter_sched(div1, div2, (3,0,0)))
@@ -32,9 +40,6 @@ def main():
     # Weeks 10,11,12,13,14
     schedule.extend(get_odd_intra_sched(div1, div2, 5, 4))
 
-    # Check distribution
-    print_sched_distro(schedule, 'B')
-    print_sched_distro(schedule, 'Dan')
 
 class SchedulingAction(argparse.Action):
 
