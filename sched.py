@@ -36,16 +36,7 @@ def main():
 
     # Print distribution if asked
     if args.distribution:
-
-        # For div1
-        for t in div1:
-            print('DIV1 TEAM: {}'.format(t))
-            print_distribution(schedule, t)
-
-        # For div2
-        for t in div2:
-            print('DIV2 TEAM: {}'.format(t))
-            print_distribution(schedule, t)
+        print_distribution(schedule, div1, div2)
 
 
 class SchedulingAction(argparse.Action):
@@ -188,31 +179,41 @@ def get_intra_sched(div1, div2, div_offset=1):
     return weeks
 
 
-def print_distribution(schedule, team):
+def print_distribution(schedule, div1, div2):
 
-    count = {}
+    # Initiate distro count dict
+    sched_distro = {}
+    for team in div1+div2:
+        sched_distro[team] = {t:0 for t in div1+div2 if t != team}
+
+
+    # Loop through the weeks in the schedule
     for w in schedule:
 
-        # Find other team
-        other_team = None
+        # Go to each matchup and inc counters
         for m in w:
-            if m[0] == team:
-                other_team = m[1]
-            elif m[1] == team:
-                other_team = m[0]
+            sched_distro[m[1]][m[0]] += 1
+            sched_distro[m[0]][m[1]] += 1
 
-            if other_team:
-                break
+    # Print results for div1
+    for team in sorted(div1):
+        print('DIV1: {}'.format(team))
 
-        assert(other_team)
+        # Loop through counts
+        for other_team in sorted(sched_distro[team].keys()):
+            print('- {}: {}'.format(other_team, sched_distro[team][other_team]))
 
-        if other_team not in count:
-            count[other_team] = 0
+        print()
 
-        count[other_team] += 1
+    # Print results for div2
+    for team in sorted(div2):
+        print('DIV2: {}'.format(team))
 
-    for k in sorted(count.keys()):
-        print('{} = {}'.format(k, count[k]))
+        # Loop through counts
+        for other_team in sorted(sched_distro[team].keys()):
+            print('- {}: {}'.format(other_team, sched_distro[team][other_team]))
+
+        print()
 
 if __name__ == '__main__':
     main()
