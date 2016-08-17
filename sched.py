@@ -147,7 +147,7 @@ def get_intra_sched(div1, div2, div_offset=1):
     # Create a list of lists to gather weeks of matchups
     weeks = [[] for i in range(div_size)]
 
-    for week_num in range(week_count):
+    for week_num in range(div_size):
 
         # Loop through both divisions
         for x1 in range(div_size):
