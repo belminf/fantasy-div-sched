@@ -66,7 +66,7 @@ def get_odd_intra_sched(div1, div2, week_count, div_offset=1):
     return weeks
 
 
-def print_stats(schedule, team):
+def print_sched_distro(schedule, team):
     print("Team: {}".format(team))
 
     count = {}
@@ -118,5 +118,5 @@ schedule.extend(get_inter_sched(div1, div2, (3,0,0)))
 schedule.extend(get_odd_intra_sched(div1, div2, 5, 4))
 
 # Check distribution
-print_stats(schedule, 'B')
-print_stats(schedule, 'D')
+print_sched_distro(schedule, 'B')
+print_sched_distro(schedule, 'Dan')
