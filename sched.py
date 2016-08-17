@@ -17,35 +17,30 @@ div1,div2 = zip(*teams_with_rivals)
 
 
 
-def get_rr_weeks(teams, week_count):
-    weeks = []
+def get_inter_sched(div1, div2, div_offsets):
 
-    # Need teams as a list
-    teams = list(teams)
+    # Assert divisions are the same size
+    assert(len(div1) == len(div2))
 
-    # Get middle to pivot with
-    mid = int(len(teams)/2)
+    # Create a list of lists to gather weeks of matchups
+    weeks = [[] for i in range(len(div_offsets))]
 
-    # Get all the weeks
-    for n in range(week_count):
+    # Save division size
+    div_size = len(div1)
 
-        # Split to two sides
-        side1 = teams[:mid]
-        side2 = teams[mid:][::-1]
+    # Loop offsets, each is for a week
+    for week_num in range(len(div_offsets)):
+        offset = div_offsets[week_num]
 
-        # Swap sides every other loop
-        if n % 2:
-            matchups = zip(side1, side2)
-        else:
-            matchups = zip(side2, side1)
+        # Loop through teams and add matchups
+        for i in range(div_size):
 
-        # print(tuple(matchups))
+            # Get division indexes
+            n1 = i
+            n2 = (i+offset) % div_size
 
-        # Append to weeks
-        weeks.append(tuple(matchups))
-
-        # Rotate team list
-        teams.insert(1, teams.pop())
+            # Append to week schedule
+            weeks[week_num].append((div1[n1],div2[n2]))
 
     return weeks
 
@@ -119,7 +114,7 @@ def print_stats(schedule, team):
     for k in sorted(count.keys()):
         print('{} = {}'.format(k, count[k]))
 
-schedule = get_odd_div_sched(div1, div2, 10)
+schedule = get_inter_sched(div1, div2, (1,2,1))
 print schedule
 print_stats(schedule, 'B')
 # print_stats(schedule, 'D')
