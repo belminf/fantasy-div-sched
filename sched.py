@@ -106,11 +106,13 @@ teams_with_rivals = (
 div1,div2 = zip(*teams_with_rivals)
 
 # Schedule
+schedule = []
+
 # Week 1
-schedule = get_inter_sched(div1, div2, (1,))
+schedule.extend(get_inter_sched(div1, div2, (1,)))
 
 # Weeks 2,3,4,5,6
-schedule.extend(get_odd_intra_sched(div1, div2, 5, 2))
+schedule.extend(get_odd_intra_sched(div1, div2, 5, 1))
 
 # Weeks 7,8,9
 schedule.extend(get_inter_sched(div1, div2, (3,0,0)))
