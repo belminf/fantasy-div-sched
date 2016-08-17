@@ -14,6 +14,10 @@ def main():
     if len(div1) != len(div2):
         raise ValueError('Divisions are not the same length')
 
+    # Make sure all names are unique
+    if len(set(div1+div2)) != len(div1+div2):
+        raise ValueError('Duplicate team names not supported')
+
     # Create schedules
     schedule = []
     for f,a in args.scheduling_funcs:
