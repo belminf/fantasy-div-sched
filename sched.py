@@ -36,6 +36,31 @@ def main():
     print_sched_distro(schedule, 'B')
     print_sched_distro(schedule, 'Dan')
 
+class SchedulingAction(argparse.Action):
+
+    def __init__(self, option_strings, dest, scheduling_func=None, **kwargs):
+
+        # Require the scheduling function
+        if scheduling_func is None:
+            raise ValueError('Need scheduling_func')
+        self.scheduling_func = scheduling_func
+
+        super(SchedulingAction, self).__init__(option_strings, dest, **kwargs)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+
+        # Add and load scheduling_funcs attribute
+        if  'scheduling_funcs' not in namespace:
+            setattr(namespace, 'scheduling_funcs', [])
+        scheduling_funcs = namespace.scheduling_funcs
+
+        # Check for default
+        if not values:
+            values = self.default
+
+        # Append this function to the list
+        scheduling_funcs.append((self.scheduling_func, values))
+        setattr(namespace, 'scheduling_funcs', scheduling_funcs)
 
 def parse_cmd():
     parser = argparse.ArgumentParser(description='Generates schedule for a league with divisional play')
@@ -62,6 +87,8 @@ def parse_cmd():
         nargs='+',
         metavar='OFFSET',
         help='Inter-divisional weeks, week count determined by number of offsets, offsets used for pairing up teams from both divisions',
+        scheduling_func=get_inter_sched,
+        action=SchedulingAction
     )
 
     parser.add_argument(
@@ -71,6 +98,8 @@ def parse_cmd():
         default=1,
         metavar='OFFSET',
         help='Intra-divisional weeks, week count determined by number of teams in a division, if divisons are odd sized offset will be used for an interdivisional matchup pairing to even out the week',
+        scheduling_func=get_intra_sched,
+        action=SchedulingAction
     )
 
     return parser.parse_args()
