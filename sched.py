@@ -1,22 +1,5 @@
 #!/usr/bin/env python3
 
-rival_week = 5
-total_weeks = 9
-
-teams_with_rivals = (
-    ('B', 'I'),
-    ('Dav', 'C'),
-    ('DG', 'Dan'),
-    ('R', 'L'),
-    ('M', 'A'),
-)
-
-teams = tuple.__add__(*zip(*teams_with_rivals))
-
-div1,div2 = zip(*teams_with_rivals)
-
-
-
 def get_inter_sched(div1, div2, div_offsets):
 
     # Assert divisions are the same size
@@ -114,14 +97,29 @@ def print_stats(schedule, team):
     for k in sorted(count.keys()):
         print('{} = {}'.format(k, count[k]))
 
-schedule = get_inter_sched(div1, div2, (1,2,1))
-print schedule
+# Testing teams
+teams_with_rivals = (
+    ('B', 'I'),
+    ('Dav', 'C'),
+    ('DG', 'Dan'),
+    ('R', 'L'),
+    ('M', 'A'),
+)
+div1,div2 = zip(*teams_with_rivals)
+
+# Schedule
+# Week 1
+schedule = get_inter_sched(div1, div2, (1,))
+
+# Weeks 2,3,4,5,6
+schedule.extend(get_odd_intra_sched(div1, div2, 5, 2))
+
+# Weeks 7,8,9
+schedule.extend(get_inter_sched(div1, div2, (3,0,0)))
+
+# Weeks 10,11,12,13,14
+schedule.extend(get_odd_intra_sched(div1, div2, 5, 4))
+
+# Check distribution
 print_stats(schedule, 'B')
-# print_stats(schedule, 'D')
-
-# schedule = get_rr_weeks(teams, total_weeks-1)
-
-# Insert rival week
-# schedule.insert(rival_week-1,teams_with_rivals)
-# print(schedule)
-# print_stats(schedule, 'DG')
+print_stats(schedule, 'D')
