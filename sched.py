@@ -27,6 +27,7 @@ def get_inter_sched(div1, div2, div_offsets):
 
     return weeks
 
+
 def get_odd_intra_sched(div1, div2, week_count, div_offset=1):
 
     # Assert divisions are the same size
@@ -45,26 +46,22 @@ def get_odd_intra_sched(div1, div2, week_count, div_offset=1):
 
             # Division indexes
             n1 = (week_num-i) % div_size
-            n2 = ((week_num-i)+ div_offset) % div_size
+            n2 = (n1+div_offset) % div_size
 
-            # Div1: Inter
+            # Intradivision
             if n1 == i:
-                div1_inter = div1[n1]
+                weeks[week_num].append((div1[n1],div2[n2]))
 
-            # Div1: Intra
-            elif n1 < i:
-                weeks[week_num].append((div1[i],div1[n1]))
+            # Interdivision
+            else:
 
-            # Div2: Inter
-            if n2 == i:
-                div2_inter = div2[n2]
+                # Div1
+                if n1 < i:
+                    weeks[week_num].append((div1[i],div1[n1]))
 
-            # Div2: Intra
-            elif n2 < i:
-                weeks[week_num].append((div2[i],div2[n2]))
-
-        # Add the interdivisional game
-        weeks[week_num].append((div1_inter,div2_inter))
+                # Div2
+                if n2 < i:
+                    weeks[week_num].append((div2[i],div2[n2]))
 
     return weeks
 
