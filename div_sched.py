@@ -213,7 +213,6 @@ def print_distribution(schedule, div1, div2):
     for team in div1+div2:
         sched_distro[team] = {t:0 for t in div1+div2 if t != team}
 
-
     # Loop through the weeks in the schedule
     for w in schedule:
 
