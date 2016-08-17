@@ -104,6 +104,9 @@ teams_with_rivals = (
     ('M', 'A'),
 )
 div1,div2 = zip(*teams_with_rivals)
+from pprint import pprint
+pprint(div1)
+pprint(div2)
 
 # Schedule
 schedule = []
@@ -112,7 +115,7 @@ schedule = []
 schedule.extend(get_inter_sched(div1, div2, (1,)))
 
 # Weeks 2,3,4,5,6
-schedule.extend(get_odd_intra_sched(div1, div2, 5, 1))
+schedule.extend(get_odd_intra_sched(div1, div2, 5, 2))
 
 # Weeks 7,8,9
 schedule.extend(get_inter_sched(div1, div2, (3,0,0)))
