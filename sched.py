@@ -49,45 +49,44 @@ def get_rr_weeks(teams, week_count):
 
     return weeks
 
-def get_intradiv_weeks(div1, div2, week_counts):
-    weeks = []
+def get_odd_intra_sched(div1, div2, week_count, div_offset=1):
 
-    # Both divisions should have 5 players
-    assert(len(div1) == 5)
-    assert(len(div2) == 5)
+    # Assert divisions are the same size
+    assert(len(div1) == len(div2))
 
-    division_size = len(div1)
+    # Create a list of lists to gather weeks of matchups
+    weeks = [[] for i in range(week_count)]
 
-    for inc in range(week_counts):
+    # Save division size
+    div_size = len(div1)
 
-        this_week = []
+    for week_num in range(week_count):
 
-        # Division 1
-        for n1 in range(division_size):
-            n2 = (division_size-n1+inc) % division_size
+        # Loop through both divisions
+        for i in range(div_size):
 
-            # inter division
-            if n1 == n2:
+            # Division indexes
+            n1 = (week_num-i) % div_size
+            n2 = ((week_num-i)+ div_offset) % div_size
+
+            # Div1: Inter
+            if n1 == i:
                 div1_inter = div1[n1]
 
-            # intra division
-            elif n1 > n2:
-                this_week.append((div1[n1],div1[n2]))
+            # Div1: Intra
+            elif n1 < i:
+                weeks[week_num].append((div1[i],div1[n1]))
 
-        # Division 2
-        for n1 in range(division_size):
-            n2 = (division_size-n1+2+inc) % division_size
+            # Div2: Inter
+            if n2 == i:
+                div2_inter = div2[n2]
 
-            # inter division
-            if n1 == n2:
-                div2_inter = div2[n1]
+            # Div2: Intra
+            elif n2 < i:
+                weeks[week_num].append((div2[i],div2[n2]))
 
-            # intra division
-            elif n1 > n2:
-                this_week.append((div2[n1],div2[n2]))
-
-        this_week.append((div1_inter,div2_inter))
-        weeks.append(this_week)
+        # Add the interdivisional game
+        weeks[week_num].append((div1_inter,div2_inter))
 
     return weeks
 
@@ -120,9 +119,10 @@ def print_stats(schedule, team):
     for k in sorted(count.keys()):
         print('{} = {}'.format(k, count[k]))
 
-schedule = get_intradiv_weeks(div1, div2, 10)
+schedule = get_odd_div_sched(div1, div2, 10)
+print schedule
 print_stats(schedule, 'B')
-print_stats(schedule, 'D')
+# print_stats(schedule, 'D')
 
 # schedule = get_rr_weeks(teams, total_weeks-1)
 
