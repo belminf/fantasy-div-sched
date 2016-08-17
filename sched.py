@@ -104,7 +104,7 @@ def get_inter_sched(div1, div2, div_offsets):
     return weeks
 
 
-def get_odd_intra_sched(div1, div2, div_offset=1):
+def get_intra_sched(div1, div2, div_offset=1):
 
     # Assert divisions are the same size
     assert(len(div1) == len(div2))
