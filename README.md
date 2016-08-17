@@ -4,7 +4,7 @@ For help:
 
     $ ./div_sched.py --help
 
-'''Note:''' Offsets are used to matchup inter-divisional teams.
+***Note:*** Offsets are used to matchup inter-divisional teams.
 
 # Example
 Example for a 10 team and 14 week league, that would result in a schedule where you play your division mates 2x each, the other division teams 1x each, and one inter-divisional rival an extra time:
