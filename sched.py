@@ -34,11 +34,18 @@ def main():
         print()
 
 
-    # Weeks 7,8,9
-    schedule.extend(get_inter_sched(div1, div2, (3,0,0)))
+    # Print distribution if asked
+    if args.distribution:
 
-    # Weeks 10,11,12,13,14
-    schedule.extend(get_odd_intra_sched(div1, div2, 5, 4))
+        # For div1
+        for t in div1:
+            print('DIV1 TEAM: {}'.format(t))
+            print_distribution(schedule, t)
+
+        # For div2
+        for t in div2:
+            print('DIV2 TEAM: {}'.format(t))
+            print_distribution(schedule, t)
 
 
 class SchedulingAction(argparse.Action):
@@ -103,6 +110,12 @@ def parse_cmd():
         help='Intra-divisional weeks, week count determined by number of teams in a division, if divisons are odd sized offset will be used for an interdivisional matchup pairing to even out the week',
         scheduling_func=get_intra_sched,
         action=SchedulingAction
+    )
+
+    parser.add_argument(
+        '--distribution',
+        action='store_true',
+        help='Print scheduling distribution for each team',
     )
 
     return parser.parse_args()
@@ -175,11 +188,9 @@ def get_intra_sched(div1, div2, div_offset=1):
     return weeks
 
 
-def print_sched_distro(schedule, team):
-    print("Team: {}".format(team))
+def print_distribution(schedule, team):
 
     count = {}
-
     for w in schedule:
 
         # Find other team
