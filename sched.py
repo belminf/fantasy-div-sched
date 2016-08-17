@@ -69,7 +69,6 @@ def parse_cmd():
         '--div1',
         nargs='+',
         metavar='TEAM',
-        type=argparse.FileType('r'),
         help='Teams for first division',
     )
 
@@ -77,7 +76,6 @@ def parse_cmd():
         '--div2',
         nargs='+',
         metavar='TEAM',
-        type=argparse.FileType('r'),
         help='Teams for second division',
     )
 
