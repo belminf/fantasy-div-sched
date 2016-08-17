@@ -1,4 +1,80 @@
 #!/usr/bin/env python3
+import argparse
+
+def main():
+    args = parse_cmd()
+
+    # Testing teams
+    teams_with_rivals = (
+        ('B', 'I'),
+        ('Dav', 'C'),
+        ('DG', 'Dan'),
+        ('R', 'L'),
+        ('M', 'A'),
+    )
+    div1,div2 = zip(*teams_with_rivals)
+    from pprint import pprint
+    pprint(div1)
+    pprint(div2)
+
+    # Schedule
+    schedule = []
+
+    # Week 1
+    schedule.extend(get_inter_sched(div1, div2, (1,)))
+
+    # Weeks 2,3,4,5,6
+    schedule.extend(get_odd_intra_sched(div1, div2, 5, 2))
+
+    # Weeks 7,8,9
+    schedule.extend(get_inter_sched(div1, div2, (3,0,0)))
+
+    # Weeks 10,11,12,13,14
+    schedule.extend(get_odd_intra_sched(div1, div2, 5, 4))
+
+    # Check distribution
+    print_sched_distro(schedule, 'B')
+    print_sched_distro(schedule, 'Dan')
+
+
+def parse_cmd():
+    parser = argparse.ArgumentParser(description='Generates schedule for a league with divisional play')
+
+    parser.add_argument(
+        '--div1',
+        nargs='+',
+        metavar='TEAM',
+        type=argparse.FileType('r'),
+        help='Teams for first division',
+    )
+
+    parser.add_argument(
+        '--div2',
+        nargs='+',
+        metavar='TEAM',
+        type=argparse.FileType('r'),
+        help='Teams for second division',
+    )
+
+    parser.add_argument(
+        '--inter',
+        type=int,
+        nargs='+',
+        metavar='OFFSET',
+        help='Inter-divisional weeks, week count determined by number of offsets, offsets used for pairing up teams from both divisions',
+    )
+
+    parser.add_argument(
+        '--intra',
+        type=int,
+        nargs='?',
+        default=1,
+        metavar='OFFSET',
+        help='Intra-divisional weeks, week count determined by number of teams in a division, if divisons are odd sized offset will be used for an interdivisional matchup pairing to even out the week',
+    )
+
+    return parser.parse_args()
+
 
 def get_inter_sched(div1, div2, div_offsets):
 
@@ -95,34 +171,5 @@ def print_sched_distro(schedule, team):
     for k in sorted(count.keys()):
         print('{} = {}'.format(k, count[k]))
 
-# Testing teams
-teams_with_rivals = (
-    ('B', 'I'),
-    ('Dav', 'C'),
-    ('DG', 'Dan'),
-    ('R', 'L'),
-    ('M', 'A'),
-)
-div1,div2 = zip(*teams_with_rivals)
-from pprint import pprint
-pprint(div1)
-pprint(div2)
-
-# Schedule
-schedule = []
-
-# Week 1
-schedule.extend(get_inter_sched(div1, div2, (1,)))
-
-# Weeks 2,3,4,5,6
-schedule.extend(get_odd_intra_sched(div1, div2, 5, 2))
-
-# Weeks 7,8,9
-schedule.extend(get_inter_sched(div1, div2, (3,0,0)))
-
-# Weeks 10,11,12,13,14
-schedule.extend(get_odd_intra_sched(div1, div2, 5, 4))
-
-# Check distribution
-print_sched_distro(schedule, 'B')
-print_sched_distro(schedule, 'Dan')
+if __name__ == '__main__':
+    main()
