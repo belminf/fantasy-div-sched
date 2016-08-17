@@ -148,33 +148,60 @@ def get_intra_sched(div1, div2, div_offset=1):
     # Save division size
     div_size = len(div1)
 
-    # Create a list of lists to gather weeks of matchups
-    weeks = [[] for i in range(div_size)]
+    # For odd sized divisions, we need an interdiv matchup
+    if (div_size % 2):
 
-    for week_num in range(div_size):
+        # Create a list of lists to gather weeks of matchups
+        weeks = [[] for i in range(div_size)]
 
-        # Loop through both divisions
-        for x1 in range(div_size):
+        for week_num in range(div_size):
 
-            # Division indexes
-            y1 = (week_num-x1) % div_size
-            x2 = (x1+div_offset) % div_size
-            y2 = (week_num-x1+div_offset) % div_size
+            # Loop through both divisions
+            for x1 in range(div_size):
 
-            # Intradivision
-            if x1 == y1:
-                weeks[week_num].append((div1[x1],div2[x2]))
+                # Division indexes
+                y1 = (week_num-x1) % div_size
+                x2 = (x1+div_offset) % div_size
+                y2 = (week_num-x1+div_offset) % div_size
 
-            # Interdivision
-            else:
+                # Intradivision
+                if x1 == y1:
+                    weeks[week_num].append((div1[x1],div2[x2]))
 
-                # Div1
-                if x1 > y1:
-                    weeks[week_num].append((div1[x1],div1[y1]))
+                # Interdivision
+                else:
 
-                # Div2
-                if x2 > y2:
-                    weeks[week_num].append((div2[x2],div2[y2]))
+                    # Div1
+                    if x1 > y1:
+                        weeks[week_num].append((div1[x1],div1[y1]))
+
+                    # Div2
+                    if x2 > y2:
+                        weeks[week_num].append((div2[x2],div2[y2]))
+
+    # For even sized divisions, we could use round robin
+    else:
+
+        # Get middle to pivot with
+        mid = int(div_size/2)
+
+        weeks = [[] for i in range(div_size-1)]
+
+        # Do both divisions
+        for teams in (div1, div2):
+
+            # Get all the weeks
+            for week_num in range(len(weeks)):
+
+                # Split to two sides
+                side1 = teams[:mid]
+                side2 = teams[mid:][::-1]
+
+                # Create matchups and add them to schedule
+                weeks[week_num].extend(list(zip(side1, side2)))
+
+                # Rotate team list
+                teams.insert(1, teams.pop())
 
     return weeks
 
