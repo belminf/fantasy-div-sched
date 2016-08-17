@@ -1,4 +1,4 @@
-Generates schedule for leagues with two divisions
+Generates schedule for leagues with two divisions.
 
 For help:
 
@@ -10,10 +10,10 @@ For help:
 ## 10 teams in a 14 week league
 
 * Week 1: Inter-division with matchup offset 1
-* Week 2-6: 4 Intra-division games, 1 inter-division with matchup offset 2
+* Week 2-6: 4x intra-division games, 1x inter-division with matchup offset 2
 * Week 7: Inter-division with matchup offset 3
 * Week 8,9: Inter-division with matchup offset 0 ("rivals")
-* Week 10-14: 4 Inter-division games, 1 inter-division with matchup offset 4
+* Week 10-14: 4x intra-division games, 1x inter-division with matchup offset 4
 
 Schedule distribution:
 
