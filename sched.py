@@ -5,11 +5,11 @@ def get_inter_sched(div1, div2, div_offsets):
     # Assert divisions are the same size
     assert(len(div1) == len(div2))
 
-    # Create a list of lists to gather weeks of matchups
-    weeks = [[] for i in range(len(div_offsets))]
-
     # Save division size
     div_size = len(div1)
+
+    # Create a list of lists to gather weeks of matchups
+    weeks = [[] for i in range(len(div_offsets))]
 
     # Loop offsets, each is for a week
     for week_num in range(len(div_offsets)):
@@ -28,16 +28,16 @@ def get_inter_sched(div1, div2, div_offsets):
     return weeks
 
 
-def get_odd_intra_sched(div1, div2, week_count, div_offset=1):
+def get_odd_intra_sched(div1, div2, div_offset=1):
 
     # Assert divisions are the same size
     assert(len(div1) == len(div2))
 
-    # Create a list of lists to gather weeks of matchups
-    weeks = [[] for i in range(week_count)]
-
     # Save division size
     div_size = len(div1)
+
+    # Create a list of lists to gather weeks of matchups
+    weeks = [[] for i in range(div_size)]
 
     for week_num in range(week_count):
 
