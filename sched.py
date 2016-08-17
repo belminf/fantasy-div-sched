@@ -42,26 +42,27 @@ def get_odd_intra_sched(div1, div2, week_count, div_offset=1):
     for week_num in range(week_count):
 
         # Loop through both divisions
-        for i in range(div_size):
+        for x1 in range(div_size):
 
             # Division indexes
-            n1 = (week_num-i) % div_size
-            n2 = (n1+div_offset) % div_size
+            y1 = (week_num-x1) % div_size
+            x2 = (x1+div_offset) % div_size
+            y2 = (week_num-x1+div_offset) % div_size
 
             # Intradivision
-            if n1 == i:
-                weeks[week_num].append((div1[n1],div2[n2]))
+            if x1 == y1:
+                weeks[week_num].append((div1[x1],div2[x2]))
 
             # Interdivision
             else:
 
                 # Div1
-                if n1 < i:
-                    weeks[week_num].append((div1[i],div1[n1]))
+                if x1 > y1:
+                    weeks[week_num].append((div1[x1],div1[y1]))
 
                 # Div2
-                if n2 < i:
-                    weeks[week_num].append((div2[i],div2[n2]))
+                if x2 > y2:
+                    weeks[week_num].append((div2[x2],div2[y2]))
 
     return weeks
 
